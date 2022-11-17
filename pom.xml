@@ -4,11 +4,38 @@
 
     <groupId>cc.kkon</groupId>
     <artifactId>jwt-hmac-sm3</artifactId>
-    <version>0.1</version>
+    <version>0.1.1</version>
     <packaging>jar</packaging>
 
     <name>jwt-hmac-sm3</name>
 
+    <parent>
+        <groupId>org.sonatype.oss</groupId>
+        <artifactId>oss-parent</artifactId>
+        <version>7</version>
+    </parent>
+    <distributionManagement>
+        <snapshotRepository>
+            <id>sonatype-nexus-snapshots</id>
+            <url>https://s01.oss.sonatype.org/content/repositories/snapshots/</url>
+        </snapshotRepository>
+        <repository>
+            <id>sonatype-nexus-staging</id>
+            <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
+    </distributionManagement>
+
+    <scm>
+        <tag>master</tag>
+        <url>git@github.com:renchangjiu/jwt-hmac-sm3.git</url>
+    </scm>
+    <developers>
+        <developer>
+            <name>yui</name>
+            <email>cc@kkon.cc</email>
+            <organization>None</organization>
+        </developer>
+    </developers>
     <properties>
         <java.version>1.8</java.version>
         <maven.compiler.target>1.8</maven.compiler.target>
@@ -33,17 +60,79 @@
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.0</version>
+                <configuration>
+                    <encoding>UTF-8</encoding>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.18.1</version>
+                <configuration>
+                    <skipTests>true</skipTests>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
-                <version>3.2.1</version>
+                <version>2.4</version>
+                <configuration>
+                    <attach>true</attach>
+                </configuration>
                 <executions>
                     <execution>
-                        <id>attach-sources</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-site-plugin</artifactId>
+                <version>3.7.1</version>
+            </plugin>
+            <!-- Javadoc -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.0.1</version>
+                <configuration>
+                    <!--<javadocExecutable>${java.home}/bin/javadoc</javadocExecutable>-->
+                    <additionalJOptions>
+                        <additionalJOption>-Xdoclint:none</additionalJOption>
+                    </additionalJOptions>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
                         <goals>
                             <goal>jar</goal>
                         </goals>
                     </execution>
                 </executions>
             </plugin>
+            <!-- Gpg Signature -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <version>1.6</version>
+                <executions>
+                    <execution>
+                        <id>sign-artifacts</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>sign</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
+
 </project>

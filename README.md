@@ -9,12 +9,15 @@ pay1.setExp(new Date());
 String userId = UUID.randomUUID().toString();
 pay1.set("userId" , userId);
 
+// 创建 token
 String jwt = Jwts.create(key, pay1);
 
+// 验证
 boolean signVerified = Jwts.verified(jwt, key);
 
 assert signVerified;
 
+// 获取载荷
 Payload pay2 = Jwts.parse(jwt, key);
 String userId1 = pay2.get("userId" ).toString();
 
@@ -27,6 +30,6 @@ System.out.println(jwt);
 <dependency>
     <groupId>cc.kkon</groupId>
     <artifactId>jwt-hmac-sm3</artifactId>
-    <version>0.1</version>
+    <version>0.1.1</version>
 </dependency>
 ```
